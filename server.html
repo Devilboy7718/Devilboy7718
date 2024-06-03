@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>King MD Bot Session</title>
+</head>
+<body>
+    <h1>King MD Bot Session</h1>
+    <div>
+        <button onclick="pairBot()">Pair Bot</button>
+    </div>
+    <div id="qrcode"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        async function pairBot() {
+            try {
+                const response = await fetch('/generate-qr');
+                const data = await response.json();
+                if (data.qr) {
+                    document.getElementById('qrcode').innerHTML = '';
+                    QRCode.toCanvas(document.getElementById('qrcode'), data.qr, function (error) {
+                        if (error) console.error(error);
+                        console.log('QR code generated!');
+                    });
+                } else {
+                    alert('Failed to generate QR code');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
